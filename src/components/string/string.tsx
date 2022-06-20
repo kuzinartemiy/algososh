@@ -1,11 +1,14 @@
-import { ChangeEvent, FormEvent, useState, FC } from "react";
-import { DELAY_IN_MS } from "../../constants/delays";
-import { ElementStates } from "../../types/element-states";
-import { sleep } from "../../utils";
-import { Button } from "../ui/button/button";
-import { Circle } from "../ui/circle/circle";
-import { Input } from "../ui/input/input";
-import { SolutionLayout } from "../ui/solution-layout/solution-layout";
+import { nanoid } from 'nanoid';
+import React, {
+  ChangeEvent, FormEvent, useState, FC,
+} from 'react';
+import { DELAY_IN_MS } from '../../constants/delays';
+import { ElementStates } from '../../types/element-states';
+import { sleep } from '../../utils';
+import { Button } from '../ui/button/button';
+import { Circle } from '../ui/circle/circle';
+import { Input } from '../ui/input/input';
+import { SolutionLayout } from '../ui/solution-layout/solution-layout';
 import styles from './string.module.css';
 
 interface IArrayData {
@@ -20,22 +23,7 @@ export const StringComponent: FC = () => {
 
   const changeString = (evt: ChangeEvent<HTMLInputElement>) => {
     setString(evt.target.value);
-  }
-
-  const submitHandler = async (evt: FormEvent) => {
-    evt.preventDefault();
-    setInProgress(true);
-    const stringArray = string.split('');
-    const stateCircles: IArrayData[] = [];
-    
-    stringArray.forEach((el) => stateCircles.push({
-      el,
-      state: ElementStates.Default,
-    }));
-    setArr([...stateCircles]);
-    await revert(stateCircles);
-    setInProgress(false);
-  }
+  };
 
   const revert = async (array: IArrayData[]) => {
     if (!array.length) return [];
@@ -56,9 +44,24 @@ export const StringComponent: FC = () => {
 
       setArr([...array]);
       await sleep(DELAY_IN_MS);
-      i++;
+      i += 1;
     }
-  }
+  };
+
+  const submitHandler = async (evt: FormEvent) => {
+    evt.preventDefault();
+    setInProgress(true);
+    const stringArray = string.split('');
+    const stateCircles: IArrayData[] = [];
+
+    stringArray.forEach((el) => stateCircles.push({
+      el,
+      state: ElementStates.Default,
+    }));
+    setArr([...stateCircles]);
+    await revert(stateCircles);
+    setInProgress(false);
+  };
 
   return (
     <SolutionLayout title="Строка">
@@ -68,13 +71,11 @@ export const StringComponent: FC = () => {
           <Button isLoader={inProgress} type="submit" text="Развернуть" />
         </form>
         <ul className={styles.string__letters}>
-          {arr && arr.map((item: IArrayData, index: number) => {
-            return (
-            <li key={index}>
+          {arr && arr.map((item: IArrayData) => (
+            <li key={nanoid(10)}>
               <Circle state={item.state} letter={item.el} />
             </li>
-            )})
-          }
+          ))}
         </ul>
       </div>
     </SolutionLayout>
