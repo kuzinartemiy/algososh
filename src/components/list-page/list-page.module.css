@@ -1,0 +1,49 @@
+.listPage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.listPage__controls {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+}
+
+.listPage__list {
+  list-style: none;
+  margin: 64px 0 0;
+  display: flex;
+  gap: 16px;
+}
+
+.listPage__listItem {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  position: relative;
+}
+
+.listPage__listItem:not(:last-child)::after {
+  content: '';
+  height: 24px;
+  width: 24px;
+  background-image: url(./chevron.svg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.listPage__littleCircle {
+  position: absolute;
+  left: 12px;
+}
+
+.listPage__littleCircle_top {
+  top: -64px;
+}
+
+.listPage__littleCircle_bottom {
+  bottom: -100px;
+}
