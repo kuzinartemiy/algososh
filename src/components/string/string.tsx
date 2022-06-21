@@ -1,31 +1,31 @@
-import { nanoid } from 'nanoid';
 import React, {
   ChangeEvent, FormEvent, useState, FC,
 } from 'react';
 import { DELAY_IN_MS } from '../../constants/delays';
 import { ElementStates } from '../../types/element-states';
-import { sleep } from '../../utils';
+import { sleep } from '../../utils/sleep';
 import { Button } from '../ui/button/button';
 import { Circle } from '../ui/circle/circle';
 import { Input } from '../ui/input/input';
 import { SolutionLayout } from '../ui/solution-layout/solution-layout';
 import styles from './string.module.css';
 
-interface IArrayData {
-  el: string;
+interface ICircle {
+  value: string;
   state: ElementStates;
 }
 
 export const StringComponent: FC = () => {
   const [string, setString] = useState<string>('');
-  const [arr, setArr] = useState<IArrayData[]>([]);
+  const [arr, setArr] = useState<ICircle[]>([]);
   const [inProgress, setInProgress] = useState<boolean>(false);
+  const maxStringLength = 11;
 
   const changeString = (evt: ChangeEvent<HTMLInputElement>) => {
     setString(evt.target.value);
   };
 
-  const revert = async (array: IArrayData[]) => {
+  const revert = async (array: ICircle[]) => {
     if (!array.length) return [];
     const mid = array.length / 2;
     let i = 0;
@@ -52,10 +52,10 @@ export const StringComponent: FC = () => {
     evt.preventDefault();
     setInProgress(true);
     const stringArray = string.split('');
-    const stateCircles: IArrayData[] = [];
+    const stateCircles: ICircle[] = [];
 
-    stringArray.forEach((el) => stateCircles.push({
-      el,
+    stringArray.forEach((value) => stateCircles.push({
+      value,
       state: ElementStates.Default,
     }));
     setArr([...stateCircles]);
@@ -67,13 +67,13 @@ export const StringComponent: FC = () => {
     <SolutionLayout title="Строка">
       <div className={styles.string}>
         <form onSubmit={submitHandler} className={styles.string__form}>
-          <Input onChange={changeString} value={string} isLimitText maxLength={11} extraClass={styles.string__input} />
+          <Input onChange={changeString} value={string} isLimitText maxLength={maxStringLength} extraClass={styles.string__input} />
           <Button isLoader={inProgress} type="submit" text="Развернуть" />
         </form>
         <ul className={styles.string__letters}>
-          {arr && arr.map((item: IArrayData) => (
-            <li key={nanoid(10)}>
-              <Circle state={item.state} letter={item.el} />
+          {arr && arr.map((item, index) => (
+            <li key={index}>
+              <Circle state={item.state} letter={item.value} />
             </li>
           ))}
         </ul>

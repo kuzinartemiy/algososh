@@ -37,6 +37,7 @@
         "consistent-return": 0,
         "react/no-this-in-sfc": 0,
         "max-classes-per-file": 0,
-        "no-console": 0
+        "no-console": 0,
+        "react/no-array-index-key": 0
     }
 }

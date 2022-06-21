@@ -1,12 +1,12 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-bitwise */
-import { nanoid } from 'nanoid';
 import React, {
   ChangeEvent, useEffect, useMemo, useState,
 } from 'react';
 import { SHORT_DELAY_IN_MS } from '../../constants/delays';
 import { ElementStates } from '../../types/element-states';
-import { sleep } from '../../utils';
+import { sleep } from '../../utils/sleep';
+import { LinkedList } from '../../utils/linkedList';
 import { Button } from '../ui/button/button';
 import { Circle } from '../ui/circle/circle';
 import { Input } from '../ui/input/input';
@@ -32,142 +32,6 @@ export const ListPage: React.FC = () => {
   const [isListEmpty, setIsListEmpty] = useState<boolean>(false);
   const [inProgress, setInProgress] = useState<boolean>(false);
 
-  class Node<T> {
-    value: T;
-
-    // eslint-disable-next-line no-use-before-define
-    next: Node<T> | null;
-
-    constructor(value: T, next?: Node<T> | null) {
-      this.value = value;
-      this.next = (next === undefined ? null : next);
-    }
-  }
-
-  interface ILinkedList<T> {
-    append: (element: T) => void;
-    insertAt: (element: T, position: number) => void;
-    getSize: () => number;
-    print: () => void;
-    findElement: (index: number) => void;
-    removeAt: (index: number) => void;
-  }
-
-  class LinkedList<T> implements ILinkedList<T> {
-    private head: Node<T> | null;
-
-    private size: number;
-
-    constructor() {
-      this.head = null;
-      this.size = 0;
-    }
-
-    findElement(index: number) {
-      if (index < 0 || index > this.size) {
-        console.log('Enter a valid index');
-        return;
-      }
-      let currentNode = this.head;
-      let count = 0;
-
-      while (currentNode) {
-        if (count === index) {
-          return currentNode.value;
-        }
-
-        count += 1;
-        currentNode = currentNode.next;
-      }
-
-      return null;
-    }
-
-    removeAt(index: number) {
-      if (index < 0 || index > this.size) {
-        throw new Error('Enter a valid index');
-      }
-
-      let curr = this.head;
-
-      if (curr && index === 0) {
-        this.head = curr.next;
-      } else {
-        for (let i = 0; curr != null && i < index - 1; i += 1) {
-          curr = curr.next;
-        }
-
-        if (curr == null || curr.next == null) {
-          return null;
-        }
-
-        const { next } = curr.next;
-
-        curr.next = next;
-      }
-
-      this.size -= 1;
-    }
-
-    insertAt(element: T, index: number) {
-      if (index < 0 || index > this.size) {
-        throw new Error('Enter a valid index');
-      } else {
-        const node = new Node(element);
-
-        if (index === 0) {
-          node.next = this.head;
-          this.head = node;
-        } else if (this.head) {
-          let curr = this.head;
-          let currIndex = 0;
-
-          while (currIndex + 1 < index && curr.next) {
-            curr = curr.next;
-            currIndex += 1;
-          }
-
-          const trav = curr.next;
-          curr.next = node;
-          node.next = trav;
-        }
-
-        this.size += 1;
-      }
-    }
-
-    append(element: T) {
-      const node = new Node(element);
-      let current;
-
-      if (this.head === null) {
-        this.head = node;
-      } else {
-        current = this.head;
-        while (current.next) {
-          current = current.next;
-        }
-
-        current.next = node;
-      }
-      this.size += 1;
-    }
-
-    getSize() {
-      return this.size;
-    }
-
-    print() {
-      let curr = this.head;
-      let res = '';
-      while (curr) {
-        res += `${curr.value} `;
-        curr = curr.next;
-      }
-      console.log(res);
-    }
-  }
-
   const list = useMemo(() => new LinkedList<string>(), []);
 
   const initialValues = ['0', '34', '8', '1'];
@@ -192,7 +56,7 @@ export const ListPage: React.FC = () => {
   };
 
   const onChangeIndex = (evt: ChangeEvent<HTMLInputElement>) => {
-    setInputIndex(~~evt.target.value);
+    setInputIndex(parseInt(evt.target.value, 10));
   };
 
   const onAddToHead = async () => {
@@ -473,6 +337,7 @@ export const ListPage: React.FC = () => {
         </div>
         <div className={styles.listPage__controls}>
           <Input
+            maxLength={4}
             onChange={onChangeIndex}
             value={inputIndex || ''}
             placeholder="Введите индекс"
@@ -493,8 +358,8 @@ export const ListPage: React.FC = () => {
           />
         </div>
         <ul className={styles.listPage__list}>
-          {listContainer.map((item: ICircle, index: number) => (
-            <li className={styles.listPage__listItem} key={nanoid(10)}>
+          {listContainer.map((item, index) => (
+            <li className={styles.listPage__listItem} key={index}>
               {item.littleCircle && (
                 <Circle
                   extraClass={`${styles.listPage__littleCircle} ${styles[`listPage__littleCircle_${item.littleCircle.position}`]}`}

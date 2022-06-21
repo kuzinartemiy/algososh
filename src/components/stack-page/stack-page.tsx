@@ -1,22 +1,13 @@
-import { nanoid } from 'nanoid';
 import React, { useState, FC, ChangeEvent } from 'react';
 import { SHORT_DELAY_IN_MS } from '../../constants/delays';
 import { ElementStates } from '../../types/element-states';
-import { sleep } from '../../utils';
+import { sleep } from '../../utils/sleep';
+import { Stack } from '../../utils/stack';
 import { Button } from '../ui/button/button';
 import { Circle } from '../ui/circle/circle';
 import { Input } from '../ui/input/input';
 import { SolutionLayout } from '../ui/solution-layout/solution-layout';
 import styles from './stack-page.module.css';
-
-interface IStack<T> {
-  // eslint-disable-next-line no-unused-vars
-  push: (item: T) => void;
-  pop: () => void;
-  peak: () => T | null;
-  getSize: () => number;
-  clear: () => void;
-}
 
 interface ICircle {
   value: string | null,
@@ -30,29 +21,6 @@ export const StackPage: FC = () => {
   const onChangeInputValue = (evt: ChangeEvent<HTMLInputElement>) => {
     setInputValue(evt.target.value);
   };
-
-  class Stack<T> implements IStack<T> {
-    private container: T[] = [];
-
-    push = (item: T): void => {
-      this.container.push(item);
-    };
-
-    pop = (): void => {
-      this.container.pop();
-    };
-
-    peak = (): T | null => {
-      if (this.container.length) return this.container[this.container.length - 1];
-      return null;
-    };
-
-    getSize = () => this.container.length;
-
-    clear = (): void => {
-      this.container = [];
-    };
-  }
 
   const stack = new Stack<string>();
 
@@ -96,8 +64,8 @@ export const StackPage: FC = () => {
           <Button disabled={!stackContainer.length} onClick={onClearStack} type="button" text="Очистить" />
         </form>
         <ul className={styles.stackPage__stack}>
-          {stackContainer.map((item: ICircle, index: number) => (
-            <li key={nanoid(10)}>
+          {stackContainer.map((item, index) => (
+            <li key={index}>
               <Circle
                 state={item.state}
                 letter={item.value || ''}

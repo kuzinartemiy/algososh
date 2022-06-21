@@ -1,11 +1,11 @@
 /* eslint-disable no-unused-vars */
-import { nanoid } from 'nanoid';
 import React, {
   ChangeEvent, FC, useEffect, useMemo, useState,
 } from 'react';
 import { SHORT_DELAY_IN_MS } from '../../constants/delays';
 import { ElementStates } from '../../types/element-states';
-import { sleep } from '../../utils';
+import { sleep } from '../../utils/sleep';
+import { Queue } from '../../utils/queue';
 import { Button } from '../ui/button/button';
 import { Circle } from '../ui/circle/circle';
 import { Input } from '../ui/input/input';
@@ -25,83 +25,6 @@ export const QueuePage: FC = () => {
   const [isQueueEmpty, setIsQueueEmpty] = useState<boolean>(true);
 
   const maxQueueLength = 7;
-
-  interface IQueue<T> {
-    enqueue: (item: T) => void;
-    dequeue: () => void;
-    peak: () => T | null;
-    getHead: () => { value: T | null; index: number; };
-    getTail: () => { value: T | null; index: number; };
-  }
-
-  class Queue<T> implements IQueue<T> {
-    private container: (T | null)[] = [];
-
-    head = 0;
-
-    tail = 0;
-
-    private readonly size: number = 0;
-
-    length: number = 0;
-
-    constructor(size: number) {
-      this.size = size;
-      this.container = Array(size);
-    }
-
-    enqueue = (item: T) => {
-      if (this.length >= this.size) {
-        throw new Error('Maximum length exceeded');
-      }
-      this.container[this.tail] = item;
-      this.tail += 1;
-      this.length += 1;
-    };
-
-    dequeue = () => {
-      if (this.isEmpty()) {
-        throw new Error('No elements in the queue');
-      }
-
-      if (this.head === this.size) {
-        this.head = 0;
-      }
-      this.container[this.head] = null;
-      this.length -= 1;
-      this.head += 1;
-    };
-
-    peak = (): T | null => {
-      if (this.isEmpty()) {
-        throw new Error('No elements in the queue');
-      }
-      return this.container[this.head % this.size];
-    };
-
-    isEmpty = () => this.length === 0;
-
-    clear = () => {
-      this.container = [];
-      this.head = 0;
-      this.tail = 0;
-      this.length = 0;
-    };
-
-    getHead = () => {
-      if (this.isEmpty()) {
-        throw new Error('No elements in the queue');
-      }
-      return { value: this.container[this.head], index: this.head };
-    };
-
-    getTail = () => {
-      if (this.isEmpty()) {
-        throw new Error('No elements in the queue');
-      }
-      return { value: this.container[this.tail - 1], index: this.tail - 1 };
-    };
-  }
 
   const queue = useMemo(() => new Queue<string>(maxQueueLength), []);
 
@@ -219,8 +142,8 @@ export const QueuePage: FC = () => {
           <Button disabled={isQueueEmpty} onClick={onClearQueue} type="button" text="Очистить" />
         </form>
         <ul className={styles.queuePage__queue}>
-          {queueContainer.map((item: any, index: number) => (
-            <li key={nanoid(10)}>
+          {queueContainer.map((item, index) => (
+            <li key={index}>
               <Circle
                 state={item ? item.state : ElementStates.Default}
                 letter={item ? item.value : ''}
