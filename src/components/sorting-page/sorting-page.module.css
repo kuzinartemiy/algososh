@@ -1,0 +1,23 @@
+.sortingPage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.sortingPage__form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.sortingPage__columns {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  list-style: none;
+  margin: 48px 0 0;
+  padding: 0;
+  min-height: 340px;
+}

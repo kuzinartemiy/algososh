@@ -1,6 +1,7 @@
-import React from "react";
-import { nanoid } from "nanoid";
-import styles from "./radio-input.module.css";
+/* eslint-disable react/require-default-props */
+import React from 'react';
+import { nanoid } from 'nanoid';
+import styles from './radio-input.module.css';
 
 interface RadioProps extends React.HTMLProps<HTMLInputElement> {
   label: string;
@@ -8,8 +9,8 @@ interface RadioProps extends React.HTMLProps<HTMLInputElement> {
 }
 
 export const RadioInput: React.FC<RadioProps> = ({
-  label = "Введите текст",
-  extraClass = "",
+  label = 'Введите текст',
+  extraClass = '',
   ...rest
 }) => {
   const id = nanoid();
