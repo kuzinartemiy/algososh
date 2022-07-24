@@ -132,12 +132,14 @@ export const QueuePage: FC = () => {
     }
   };
 
+  const isQueueEnded = !queue.isEmpty() && queue.getTail().index === maxQueueLength - 1;
+
   return (
     <SolutionLayout title="Очередь">
       <div className={styles.queuePage}>
         <form className={styles.queuePage__form}>
           <Input isLimitText maxLength={4} onChange={onChangeInputValue} value={inputValue} placeholder="Введите текст" />
-          <Button disabled={!inputValue} onClick={onEnqueue} type="button" text="Добавить" />
+          <Button disabled={!inputValue || isQueueEnded} onClick={onEnqueue} type="button" text="Добавить" />
           <Button disabled={isQueueEmpty} onClick={onDequeue} type="button" text="Удалить" />
           <Button disabled={isQueueEmpty} onClick={onClearQueue} type="button" text="Очистить" />
         </form>

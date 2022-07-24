@@ -9,7 +9,7 @@ import { RadioInput } from '../ui/radio-input/radio-input';
 import { SolutionLayout } from '../ui/solution-layout/solution-layout';
 import styles from './sorting-page.module.css';
 
-interface IColumn {
+export interface IColumn {
   value: number;
   state: ElementStates;
 }
@@ -107,12 +107,12 @@ export const SortingPage: FC = () => {
 
   const descSort = async () => {
     setInProgress(true);
-    if (sortMethod === 'bubbleSort') {
-      await bubbleSort(sortArray, 'desc');
-    }
-    if (sortMethod === 'selectionSort') {
-      await selectionSort(sortArray, 'desc');
-    }
+    // if (sortMethod === 'bubbleSort') {
+    //   await bubbleSort(sortArray, 'desc');
+    // }
+    // if (sortMethod === 'selectionSort') {
+    //   await selectionSort(sortArray, 'desc');
+    // }
     setInProgress(false);
   };
 

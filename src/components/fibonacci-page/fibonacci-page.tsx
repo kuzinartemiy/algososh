@@ -52,7 +52,7 @@ export const FibonacciPage: FC = () => {
       <div className={styles.fibonacciPage}>
         <form onSubmit={submitHandler} className={styles.fibonacciPage__form}>
           <Input onChange={changeHandler} value={number} type="number" isLimitText max={maxLength} extraClass={styles.string__input} />
-          <Button disabled={number > 19} isLoader={inProgress} type="submit" text="Рассчитать" />
+          <Button disabled={number > 19 || number <= 0} isLoader={inProgress} type="submit" text="Рассчитать" />
         </form>
         <ul className={styles.fibonacciPage__numbers}>
           {fibonacci && fibonacci.map((item, index) => (
