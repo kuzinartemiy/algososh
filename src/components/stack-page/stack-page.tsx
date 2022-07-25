@@ -59,7 +59,7 @@ export const StackPage: FC = () => {
       <div className={styles.stackPage}>
         <form className={styles.stackPage__form}>
           <Input isLimitText maxLength={4} onChange={onChangeInputValue} value={inputValue} placeholder="Введите текст" />
-          <Button onClick={onAddStack} type="button" text="Добавить" />
+          <Button disabled={inputValue === ''} onClick={onAddStack} type="button" text="Добавить" />
           <Button disabled={!stackContainer.length} onClick={onRemoveStack} type="button" text="Удалить" />
           <Button disabled={!stackContainer.length} onClick={onClearStack} type="button" text="Очистить" />
         </form>

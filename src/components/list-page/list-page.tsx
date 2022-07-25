@@ -343,6 +343,7 @@ export const ListPage: React.FC = () => {
             placeholder="Введите индекс"
           />
           <Button
+            disabled={!inputIndex}
             style={{ minWidth: 362 }}
             isLoader={inProgress}
             type="button"
@@ -350,6 +351,7 @@ export const ListPage: React.FC = () => {
             text="Добавить по индексу"
           />
           <Button
+            disabled={!inputIndex}
             style={{ minWidth: 362 }}
             isLoader={inProgress}
             type="button"
