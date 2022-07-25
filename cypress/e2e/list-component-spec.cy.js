@@ -79,7 +79,7 @@ describe('test list vizualization', () => {
       });
   });
 
-  it('correct adding element to index', () => {
+  it('correct adding element by index', () => {
     cy.get('input').eq(0).type('59');
     cy.get('input').eq(1).type('3');
     cy.get('button').eq(5).click();
@@ -99,7 +99,7 @@ describe('test list vizualization', () => {
     cy.get('input').eq(1).type('4');
     cy.get('button').eq(5).click();
 
-    cy.wait(SHORT_DELAY_IN_MS * 5);
+    cy.wait(SHORT_DELAY_IN_MS * 6);
 
     cy.get('[class*=circle_content]').should('have.length', 6);
 
