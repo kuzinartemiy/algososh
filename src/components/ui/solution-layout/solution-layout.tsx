@@ -34,10 +34,5 @@ export const SolutionLayout: React.FC<SolutionLayoutProps> = ({
       </h3>
       {children}
     </div>
-    <p
-      className={`text text_type_column text_color_input mt-14 ${styles.copyright}`}
-    >
-      © Сделано в Практикуме.
-    </p>
   </main>
 );

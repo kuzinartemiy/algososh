@@ -107,12 +107,12 @@ export const SortingPage: FC = () => {
 
   const descSort = async () => {
     setInProgress(true);
-    // if (sortMethod === 'bubbleSort') {
-    //   await bubbleSort(sortArray, 'desc');
-    // }
-    // if (sortMethod === 'selectionSort') {
-    //   await selectionSort(sortArray, 'desc');
-    // }
+    if (sortMethod === 'bubbleSort') {
+      await bubbleSort(sortArray, 'desc');
+    }
+    if (sortMethod === 'selectionSort') {
+      await selectionSort(sortArray, 'desc');
+    }
     setInProgress(false);
   };
 

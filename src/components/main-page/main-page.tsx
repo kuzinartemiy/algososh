@@ -51,10 +51,5 @@ export const MainPage: React.FC<MainPageProps> = ({ extraClass = '' }) => (
         <p className={styles.dot} />
       </div>
     </Marquee>
-    <p
-      className={`text text_type_column text_color_input mt-14 ${styles.copyright}`}
-    >
-      © Сделано в Практикуме.
-    </p>
   </main>
 );
